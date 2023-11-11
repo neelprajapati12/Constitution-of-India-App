@@ -1,0 +1,176 @@
+import 'package:constitution_of_india/helper/util.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class PartsArticlesPage extends StatefulWidget {
+  final title;
+  final description;
+  final smalldescription;
+  const PartsArticlesPage(
+      {this.title, this.description, this.smalldescription, super.key});
+
+  @override
+  State<PartsArticlesPage> createState() => _PartsArticlesPageState();
+}
+
+class _PartsArticlesPageState extends State<PartsArticlesPage> {
+  double fontSize = 18;
+  bool bookmarkchannge = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(
+              70), // Adjust the height to match your custom app bar
+          child: CustomAppBars(
+            onFontSizeIncrease: () {
+              if (fontSize == 18) {
+                fontSize = 24;
+              } else {
+                fontSize = 18;
+              }
+              setState(() {});
+            },
+            title: "${widget.smalldescription}",
+            backButtonImage: "assets/image/preamble/back.png",
+            shareButtonImage: "assets/image/preamble/TEXT A.png",
+            otherActionButtonImage: "assets/image/preamble/share.png",
+          ),
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.sizeOf(context).height * 0.25,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image:
+                            AssetImage("assets/image/preamble/flag image.png"),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  vSize(20),
+                  Positioned.fill(
+                    top: -330,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: MediaQuery.sizeOf(context).height * 0.02,
+                          height: MediaQuery.sizeOf(context).height * 0.02,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/image/preamble/play button_icon.png"),
+                                fit: BoxFit.fill),
+                          ),
+                        ),
+                        hSize(20),
+                        Container(
+                          width: MediaQuery.sizeOf(context).height * 0.02,
+                          height: MediaQuery.sizeOf(context).height * 0.02,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/image/preamble/pause button icon.png"),
+                                fit: BoxFit.fill),
+                          ),
+                        ),
+                        hSize(20),
+                        Container(
+                          width: MediaQuery.sizeOf(context).height * 0.02,
+                          height: MediaQuery.sizeOf(context).height * 0.02,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/image/preamble/stop-button_icon.png"),
+                                fit: BoxFit.fill),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  vSize(20),
+                  Positioned.fill(
+                    top: -270,
+                    child:
+                        Image.asset("assets/image/preamble/SEPARATOR LINE.png"),
+                  ),
+                  Positioned.fill(
+                    left: 330,
+                    bottom: 270,
+                    child: SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (bookmarkchannge == false) {
+                            HiveStore.createbookmarklist(
+                                {"bookmark": widget.title});
+                            print("Parts_Page");
+                          }
+                          bookmarkchannge = !bookmarkchannge;
+                          setState(() {});
+                        },
+                        child: bookmarkchannge
+                            ? Image.asset(
+                                "assets/image/drawer/bookmarks icon.png")
+                            : Image.asset("assets/image/preamble/bookmark.png"),
+                      ),
+                    ),
+                  ),
+                  Positioned.fill(
+                    top: 280,
+                    child: ListView(
+                      padding: EdgeInsets.all(8),
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              "${widget.title}",
+                              style: const TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.bold),
+                            ),
+                            vSize(10),
+                            Text(
+                              "${widget.smalldescription}",
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            vSize(10),
+                            Image.asset(
+                                "assets/image/preamble/SEPARATOR LINE.png"),
+                            vSize(15),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: SizedBox(
+                                width: MediaQuery.sizeOf(context).width * 0.9,
+                                child: Text(
+                                  "${widget.description}",
+                                  style: TextStyle(fontSize: fontSize),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
